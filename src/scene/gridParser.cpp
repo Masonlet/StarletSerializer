@@ -1,8 +1,8 @@
 #pragma once
 
-#include "scene/objects/grid.hpp"
-#include "parsers/scene/gridParser.hpp"
-#include "parsers/parserFunctions.hpp"
+#include "starletparsers/scene/grid.hpp"
+#include "starletparsers/scene/gridParser.hpp"
+#include "starletparsers/common/parserUtils.hpp"
 
 bool parseGrid(const unsigned char*& p, Grid& out) {
   PARSE_OR(return false, parseUInt, out.count, "cubeGrid count");

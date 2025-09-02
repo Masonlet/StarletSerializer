@@ -1,8 +1,8 @@
 #pragma once
 
-#include "scene/objects/light.hpp"
-#include "parsers/scene/lightParser.hpp"
-#include "parsers/parserFunctions.hpp"
+#include "starletparsers/scene/light.hpp"
+#include "starletparsers/scene/lightParser.hpp"
+#include "starletparsers/common/parserUtils.hpp"
 
 bool parseLight(const unsigned char*& p, Light& out) {
   PARSE_OR(return false, parseBool, out.enabled, "light enabled");

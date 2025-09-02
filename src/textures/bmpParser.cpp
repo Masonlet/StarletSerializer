@@ -1,7 +1,7 @@
-#include "graphics/texture.hpp"
-#include "parsers/textures/bmpParser.hpp"
-#include "parsers/fileParser.hpp"
-#include "utils/log.hpp"
+#include "starletparsers/textures/texture.hpp"
+#include "starletparsers/textures/bmpParser.hpp"
+#include "starletparsers/common/fileParser.hpp"
+#include "starletparsers/utils/log.hpp"
 #include <cstdio>
 
 static bool readHeader(const unsigned char* p, size_t fileSize, int32_t& height, int32_t& width, uint32_t& dataOffset) {
@@ -54,7 +54,7 @@ bool parseBMP(const char* path, Texture& out) {
 
 	const unsigned char* buffer{ nullptr };
 	size_t fileSize{ 0 };
-	if (!loadBinaryFile(buffer, fileSize, std::string(ASSET_DIR) + "/textures/" + path) || !buffer)
+	if (!loadBinaryFile(buffer, fileSize, path) || !buffer)
 		return error("BMPParser", "parseBMP", std::string("Failed to load file: ") + path);
 
 	int32_t  height{ 0 }, width{ 0 };

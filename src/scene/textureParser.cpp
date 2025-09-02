@@ -1,9 +1,9 @@
 #pragma once
 
-#include "scene/objects/textureData.hpp"
-#include "scene/objects/textureConnection.hpp"
-#include "parsers/scene/textureParser.hpp"
-#include "parsers/parserFunctions.hpp"
+#include "starletparsers/scene/textureData.hpp"
+#include "starletparsers/scene/textureConnection.hpp"
+#include "starletparsers/scene/textureParser.hpp"
+#include "starletparsers/common/parserUtils.hpp"
 
 bool parseTexture(const unsigned char*& p, TextureData& out) {
   PARSE_STRING_OR(return false, p, out.name, 128, "texture name");

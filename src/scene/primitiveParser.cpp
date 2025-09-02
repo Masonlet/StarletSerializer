@@ -1,8 +1,8 @@
 #pragma once
 
-#include "scene/objects/primitive.hpp"
-#include "parsers/scene/primitiveParser.hpp"
-#include "parsers/parserFunctions.hpp"
+#include "starletparsers/scene/primitive.hpp"
+#include "starletparsers/scene/primitiveParser.hpp"
+#include "starletparsers/common/parserUtils.hpp"
 
 bool parseTriangle(const unsigned char*& p, Primitive& out) {
   PARSE_STRING_OR(return false, p, out.name, 64, "triangle name");

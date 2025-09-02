@@ -3,7 +3,7 @@
 #include "starletmath/vec2.hpp"
 #include "starletmath/vec3.hpp"
 #include "starletmath/vec4.hpp"
-#include "scene/objects/colour.hpp"
+#include "starletparsers/scene/colour.hpp"
 
 #ifndef PARSE_OR 
 #define PARSE_OR(onFail, parser, target, errorMsg) \

@@ -1,8 +1,8 @@
-#include "graphics/mesh.hpp"
-#include "parsers/meshes/plyParser.hpp"
-#include "parsers/parserFunctions.hpp"
-#include "parsers/fileParser.hpp"
-#include "utils/log.hpp"
+#include "starletparsers/meshes/mesh.hpp"
+#include "starletparsers/meshes/plyParser.hpp"
+#include "starletparsers/common/parserUtils.hpp"
+#include "starletparsers/common/fileParser.hpp"
+#include "starletparsers/utils/log.hpp"
 #include "starletmath/constants.hpp"
 #include <string>
 
@@ -256,7 +256,7 @@ static bool parseIndices(const unsigned char*& p, Mesh& drawInfo) {
 bool parsePlyMesh(const std::string& path, Mesh& drawInfo) {
 	const unsigned char* p{ nullptr };
 	size_t size;
-	if (!loadBinaryFile(p, size, std::string(ASSET_DIR) + "/models/" + path))
+	if (!loadBinaryFile(p, size, path))
 		return false;
 
 	if (!p) return error("PlyParser", "parsePlyMesh", "Input pointer is null\n");

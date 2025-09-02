@@ -1,5 +1,5 @@
-#include "parsers/fileParser.hpp"
-#include "utils/log.hpp"
+#include "starletparsers/common/fileParser.hpp"
+#include "starletparsers/utils/log.hpp"
 
 constexpr size_t MAX_SIZE = static_cast<size_t>(200 * 1024) * 1024; //200MB Limit
 static bool getFileSize(FILE* file, size_t& sizeOut) {
