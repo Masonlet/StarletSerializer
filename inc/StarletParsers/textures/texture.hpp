@@ -13,7 +13,7 @@ struct Texture {
   inline void freePixels() { if (pixels) { delete[] pixels; pixels = nullptr; } byteSize = 0; }
 
   Texture() = default;
-  ~Texture();
+  ~Texture() = default;
 
   Texture(const Texture&) = delete;
   Texture& operator=(const Texture&) = delete;
