@@ -3,7 +3,6 @@
 #include "starletmath/vec2.hpp"
 #include "starletmath/vec3.hpp"
 #include "starletmath/vec4.hpp"
-#include "starletparsers/scene/colour.hpp"
 
 #ifndef PARSE_OR 
 #define PARSE_OR(onFail, parser, target, errorMsg) \
@@ -38,7 +37,3 @@ bool parseVec2      (const unsigned char*& p, Vec2& out);
 bool parseVec3      (const unsigned char*& p, Vec3& out);
 bool parseVec4      (const unsigned char*& p, Vec4& out);
 bool parseToken     (const unsigned char*& p, unsigned char* out, const size_t maxLength);
-
-bool parseColour    (const unsigned char*& p, Vec4& colourOut, ColourMode& modeOut);
-bool parseLightType (const unsigned char*& p, unsigned int& typeOut);
-bool parseCameraType(const unsigned char*& p, unsigned int& typeOut);

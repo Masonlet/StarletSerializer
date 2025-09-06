@@ -2,7 +2,6 @@
 
 #include "starletmath/Vec4.hpp"
 #include "starletmath/vertex.hpp"
-#include "starletparsers/scene/colour.hpp"
 #include <string>
 #include <vector>
 
