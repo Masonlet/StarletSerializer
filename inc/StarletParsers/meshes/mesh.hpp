@@ -4,10 +4,11 @@
 #include "starletmath/vertex.hpp"
 #include "starletparsers/scene/colour.hpp"
 #include <string>
+#include <vector>
 
 struct Mesh {
-  Vertex* vertices{ nullptr };
-  unsigned int* indices{ nullptr };
+  std::vector<Vertex>       vertices;
+  std::vector<unsigned int> indices;
   unsigned int numVertices{ 0 }, numIndices{ 0 }, numTriangles{ 0 };
 
   bool hasNormals{ false }, hasColours{ false }, hasTexCoords{ false };
@@ -16,13 +17,10 @@ struct Mesh {
   unsigned int VAOID{ 0 }, VertexBufferID{ 0 }, IndexBufferID{ 0 };
   unsigned int VertexBuffer_Start_Index{ 0 }, IndexBuffer_Start_Index{ 0 };
 
-  inline bool empty() const { return !vertices || !indices || numVertices == 0 || numIndices == 0; }
+  inline bool empty() const { return vertices.empty() || indices.empty() || numVertices == 0 || numIndices == 0; }
 
   Mesh() = default;
-  ~Mesh() {
-    if (vertices) { delete[] vertices; vertices = nullptr; }
-    if (indices) { delete[] indices;  indices = nullptr; }
-  }
+  ~Mesh() = default;
 
   Mesh(const Mesh&) = delete;
   Mesh& operator=(const Mesh&) = delete;
@@ -30,9 +28,6 @@ struct Mesh {
   Mesh(Mesh&& other) noexcept { *this = static_cast<Mesh&&>(other); }
   Mesh& operator=(Mesh&& other) noexcept {
     if (this != &other) {
-      delete[] vertices;
-      delete[] indices;
-
       VAOID = other.VAOID;
       VertexBufferID = other.VertexBufferID;
       IndexBufferID = other.IndexBufferID;
@@ -53,8 +48,8 @@ struct Mesh {
       minY = other.minY;
       maxY = other.maxY;
 
-      other.vertices = nullptr;
-      other.indices = nullptr;
+      other.vertices.clear();
+      other.indices.clear();
     }
     return *this;
   }

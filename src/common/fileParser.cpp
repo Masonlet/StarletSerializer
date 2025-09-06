@@ -22,7 +22,10 @@ bool loadFile(std::string& out, const std::string& path) {
 	if (!file) return error("FileParser", "loadFile", "Failed to open file: " + path);
 
 	size_t fileSize;
-	if (!getFileSize(file, fileSize)) return error("FileParser", "loadFile", "Failed to get file size");
+	if (!getFileSize(file, fileSize)) {
+		fclose(file);
+		return error("FileParser", "loadFile", "Failed to get file size");
+	}
 
 	out.resize(fileSize);
 
@@ -49,49 +52,24 @@ bool loadFile(std::string& out, const std::string& path) {
 	return true;
 }
 
-bool loadBinaryFile(const unsigned char*& dataOut, size_t& sizeOut, const std::string& path) {
+bool loadBinaryFile(std::vector<unsigned char>& dataOut, const std::string& path) {
 	FILE* file = fopen(path.c_str(), "rb");
-	if (!file) {
-		dataOut = nullptr;
-		sizeOut = 0;
-		return error("FileParser", "loadBinaryFile", "Failed to open file: " + path);
-		}
+	if (!file) return error("FileParser", "loadBinaryFile", "Failed to open file: " + path);
 
 	size_t fileSize;
 	if (!getFileSize(file, fileSize)) {
 		fclose(file); 
-		dataOut = nullptr;
-		sizeOut = 0;
 		return error("FileParser", "loadBinaryFile", "Failed to get file size");
 	}
 
-	unsigned char* buffer = new unsigned char[fileSize];
-	size_t bytesRead = 0;
-	while(bytesRead < fileSize) {
-		size_t byteRead = fread(buffer + bytesRead, 1, fileSize - bytesRead, file);
-		if (byteRead == 0) {
-			if (ferror(file)) {
-				delete[] buffer;
-				fclose(file);
-				dataOut = nullptr;
-				sizeOut = 0;
-				return error("FileParser", "loadBinaryFile", "fread failed at byte " + std::to_string(bytesRead));
-			}
-			break;
-		}
-		bytesRead += byteRead;
-	}
+	dataOut.resize(fileSize);
+	size_t bytesRead = fread(dataOut.data(), 1, fileSize, file);
 	fclose(file);
 
 	if (bytesRead != fileSize) {
-		delete[] buffer; 
-		dataOut = nullptr;
-		sizeOut = 0; 
+		dataOut.clear();
 		return error("FileParser", "loadBinaryFile", "fread failed. Expected " + std::to_string(fileSize) + ", got " + std::to_string(bytesRead));
 	}
 
-	if (dataOut) delete[] dataOut;
-	dataOut = buffer;
-	sizeOut = fileSize;
 	return true;
 }

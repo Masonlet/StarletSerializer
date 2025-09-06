@@ -52,48 +52,50 @@ bool parseBMP(const char* path, Texture& out) {
 	out.freePixels();
 	out.width = out.height = 0;
 
-	const unsigned char* buffer{ nullptr };
-	size_t fileSize{ 0 };
-	if (!loadBinaryFile(buffer, fileSize, path) || !buffer)
+	std::vector<unsigned char> file;
+	if (!loadBinaryFile(file, path))
 		return error("BMPParser", "parseBMP", std::string("Failed to load file: ") + path);
 
+	if(file.empty()) return error("BmpParser", "parseBMP", "Input pointer is null\n");
+
+	const unsigned char* p = file.data();
 	int32_t  height{ 0 }, width{ 0 };
 	uint32_t dataOffset{ 0 };
-	if (!readHeader(buffer, fileSize, height, width, dataOffset)) { delete[] buffer; return false; }
+
+	if (!readHeader(p, file.size(), height, width, dataOffset)) return false; 
 
 	const bool bottomUp = (height > 0);
 	height = bottomUp ? height : -height;
+
 	size_t rowStridePadded = (static_cast<size_t>(width) * 3 + 3) & ~static_cast<size_t>(3);
 	size_t needed = static_cast<size_t>(dataOffset) + rowStridePadded * static_cast<size_t>(height);
-	if (needed > fileSize) {
-		delete[] buffer;
-		return error("BMPParser", "parseBMP", "File too small for declared dimensions: " + std::to_string(fileSize) + " bytes, need " + std::to_string(needed) + " bytes");
-	}
+	if (needed > file.size()) 
+		return error("BMPParser", "parseBMP", "File too small for declared dimensions: " + std::to_string(file.size()) + " bytes, need " + std::to_string(needed) + " bytes");
 
 	out.width = width;
 	out.height = height;
 	out.pixelSize = 3;
 	out.byteSize = static_cast<size_t>(width * height * out.pixelSize);
-	out.pixels = new uint8_t[out.byteSize];
-	if(!out.pixels) {
-		delete[] buffer;
+	out.pixels.resize(out.byteSize);
+	if(out.pixels.empty()) 
 		return error("BMPParser", "parseBMP", "Failed to allocate memory for pixel data");
-	}
 
-	const unsigned char* srcPixels = buffer + dataOffset;
+	const unsigned char* srcPixels = p + dataOffset;
 	for (int row = 0; row < height; ++row) {
 		int srcRow = bottomUp ? (height - 1 - row) : row;
 		const unsigned char* src = srcPixels + rowStridePadded * static_cast<size_t>(srcRow);
-		unsigned char* dst = out.pixels + static_cast<size_t>(row) * static_cast<size_t>(width) * 3;
+		unsigned char* dst = out.pixels.data() + static_cast<size_t>(row) * static_cast<size_t>(width) * 3;
 
 		for (int col = 0; col < width; ++col) {
 			const size_t s = static_cast<size_t>(col) * 3;
-			dst[s + 0] = src[s + 2];
-			dst[s + 1] = src[s + 1];
-			dst[s + 2] = src[s + 0];
+			if (s + 2 < out.byteSize) {
+				dst[s + 0] = src[s + 2];
+				dst[s + 1] = src[s + 1];
+				dst[s + 2] = src[s + 0];
+			}
+			else return error("BMPParser", "parseBMP", "Buffer overrun detected while writing to 'dst'");
 		}
 	}
 
-	delete[] buffer;
 	return true;
 }

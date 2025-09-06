@@ -207,7 +207,7 @@ static bool parseVertices(const unsigned char*& p, Mesh& drawInfo) {
 
 static bool parseIndices(const unsigned char*& p, Mesh& drawInfo) {
 	if (!p) return error("PlyParser", "parseIndices", "Input pointer is null");
-	if (!drawInfo.indices || drawInfo.numIndices == 0) return error("PlyParser", "parseIndices", "Index buffer not allocated");
+	if (drawInfo.indices.empty() || drawInfo.numIndices == 0) return error("PlyParser", "parseIndices", "Index buffer not allocated");
 
 	unsigned int triangleIndex = 0;
 	while (triangleIndex < drawInfo.numTriangles && *p) {
@@ -254,13 +254,13 @@ static bool parseIndices(const unsigned char*& p, Mesh& drawInfo) {
 }
 
 bool parsePlyMesh(const std::string& path, Mesh& drawInfo) {
-	const unsigned char* p{ nullptr };
-	size_t size;
-	if (!loadBinaryFile(p, size, path))
+	std::vector<unsigned char> file;
+	if (!loadBinaryFile(file, path))
 		return false;
 
-	if (!p) return error("PlyParser", "parsePlyMesh", "Input pointer is null\n");
+	if (file.empty()) return error("PlyParser", "parsePlyMesh", "Input pointer is null\n");
 
+	const unsigned char* p = file.data();
 	std::string errorMsg;
 	while (true) {
 		if (!parsePlyHeader(p, drawInfo.numVertices, drawInfo.numTriangles, drawInfo.hasNormals, drawInfo.hasColours, drawInfo.hasTexCoords)) {
@@ -273,14 +273,14 @@ bool parsePlyMesh(const std::string& path, Mesh& drawInfo) {
 			break;
 		}
 
-		drawInfo.vertices = new Vertex[drawInfo.numVertices];
+		drawInfo.vertices.assign(drawInfo.numVertices, Vertex{});
 		if (!parseVertices(p, drawInfo)) {
 			errorMsg = "vertex data";
 			break;
 		}
 
 		drawInfo.numIndices = drawInfo.numTriangles * 3;
-		drawInfo.indices = new unsigned int[drawInfo.numIndices];
+		drawInfo.indices.assign(drawInfo.numIndices, 0u);
 		if (!parseIndices(p, drawInfo)) {
 			errorMsg = "face data";
 			break;
@@ -289,9 +289,8 @@ bool parsePlyMesh(const std::string& path, Mesh& drawInfo) {
 		return true;
 	}
 
-	if (drawInfo.indices) delete[] drawInfo.indices;
-	drawInfo.indices = nullptr;
-	if (drawInfo.vertices) delete[] drawInfo.vertices;
-	drawInfo.vertices = nullptr;
+	drawInfo.indices.clear();
+	drawInfo.vertices.clear();
+	drawInfo.numVertices = drawInfo.numIndices = drawInfo.numTriangles = 0;
 	return error("PlyParser", "LoadModelFromFile", ("Failed to parse " + errorMsg + '\n').c_str());
 }
