@@ -1,5 +1,5 @@
-#include "starletparsers/common/parserUtils.hpp"
-#include "starletparsers/utils/log.hpp"
+#include "StarletParsers/parserUtils.hpp"
+#include "StarletParsers/utils/log.hpp"
 #include <cstdlib>  
 #include <cstring>
 #include <cstdio>
