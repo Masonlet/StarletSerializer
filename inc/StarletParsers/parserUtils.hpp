@@ -30,10 +30,10 @@ const unsigned char* skipToNextLine(const unsigned char* p);
 const unsigned char* skipWhitespace(const unsigned char* p, bool skipComma = true);
 const unsigned char* trimEOL       (const unsigned char* p, const unsigned char* end);
 
-bool parseUInt      (const unsigned char*& p, unsigned int& out);
-bool parseBool      (const unsigned char*& p, bool& out);
-bool parseFloat     (const unsigned char*& p, float& out);
-bool parseVec2      (const unsigned char*& p, Vec2& out);
-bool parseVec3      (const unsigned char*& p, Vec3& out);
-bool parseVec4      (const unsigned char*& p, Vec4& out);
-bool parseToken     (const unsigned char*& p, unsigned char* out, const size_t maxLength);
+bool parseUInt  (const unsigned char*& p, unsigned int& out);
+bool parseBool  (const unsigned char*& p, bool& out);
+bool parseFloat (const unsigned char*& p, float& out);
+bool parseVec2f (const unsigned char*& p, Vec2<float>& out);
+bool parseVec3  (const unsigned char*& p, Vec3& out);
+bool parseVec4  (const unsigned char*& p, Vec4& out);
+bool parseToken (const unsigned char*& p, unsigned char* out, const size_t maxLength);

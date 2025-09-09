@@ -138,7 +138,7 @@ bool parseFloat(const unsigned char*& p, float& out) {
 	return true;
 }
 
-bool parseVec2(const unsigned char*& p, Vec2& out) {
+bool parseVec2f(const unsigned char*& p, Vec2<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y);
 }
 bool parseVec3(const unsigned char*& p, Vec3& out) {
