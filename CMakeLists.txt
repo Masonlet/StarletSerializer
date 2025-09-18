@@ -13,7 +13,7 @@ if(NOT TARGET ${PARSER_NAME})
   source_group(TREE ${PARSER_SRC_DIR} PREFIX "Source Files" FILES ${PARSER_SRC})
   source_group(TREE ${PARSER_INC_DIR} PREFIX "Header Files" FILES ${PARSER_HEADERS})
 
-  target_sources(${PARSER_NAME} PUBLIC ${PARSER_HEADERS} PRIVATE ${PARSER_SRC})
+  target_sources(${PARSER_NAME} PRIVATE ${PARSER_SRC} ${PARSER_HEADERS})
   target_include_directories(${PARSER_NAME} PUBLIC $<BUILD_INTERFACE:${PARSER_INC_DIR}> $<INSTALL_INTERFACE:include>)
   target_link_libraries(${PARSER_NAME} PUBLIC StarletMath)
 endif()
