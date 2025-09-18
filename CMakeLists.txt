@@ -18,11 +18,3 @@ source_group(TREE ${PARSER_INC_DIR} PREFIX "Header Files" FILES ${PARSER_HEADERS
  
 target_sources(${PARSER_NAME} PUBLIC ${PARSER_HEADERS} PRIVATE ${PARSER_SRC})
 target_include_directories(${PARSER_NAME} PUBLIC $<BUILD_INTERFACE:${PARSER_INC_DIR}> $<INSTALL_INTERFACE:include>)
-
-include(FetchContent)
-FetchContent_Declare(StarletMath GIT_REPOSITORY https://github.com/masonlet/starletmath.git GIT_TAG main)
-FetchContent_MakeAvailable(StarletMath)
-target_link_libraries(${PARSER_NAME} PUBLIC StarletMath)
-
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "External")
