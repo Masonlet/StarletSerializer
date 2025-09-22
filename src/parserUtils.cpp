@@ -141,10 +141,10 @@ bool parseFloat(const unsigned char*& p, float& out) {
 bool parseVec2f(const unsigned char*& p, Vec2<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y);
 }
-bool parseVec3(const unsigned char*& p, Vec3& out) {
+bool parseVec3(const unsigned char*& p, Vec3<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y) && parseFloat(p, out.z);
 }
-bool parseVec4(const unsigned char*& p, Vec4& out) {
+bool parseVec4(const unsigned char*& p, Vec4<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y) && parseFloat(p, out.z) && parseFloat(p, out.w);
 }
 
