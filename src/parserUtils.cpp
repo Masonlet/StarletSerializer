@@ -1,5 +1,11 @@
 #include "StarletParsers/parserUtils.hpp"
+
+#include "StarletMath/vec2.hpp"
+#include "StarletMath/vec3.hpp"
+#include "StarletMath/vec4.hpp"
+
 #include "StarletParsers/utils/log.hpp"
+
 #include <cstdlib>  
 #include <cstring>
 #include <cstdio>

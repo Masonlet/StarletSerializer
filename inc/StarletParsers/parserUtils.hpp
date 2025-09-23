@@ -1,8 +1,8 @@
 #pragma once
 
-#include "starletmath/vec2.hpp"
-#include "starletmath/vec3.hpp"
-#include "starletmath/vec4.hpp"
+template <typename T> struct Vec2; 
+template <typename T> struct Vec3;
+template <typename T> struct Vec4;
 
 #ifndef PARSE_OR 
 #define PARSE_OR(onFail, parser, target, errorMsg) \
