@@ -74,7 +74,7 @@ public:
 	bool parseCubeTexture(const unsigned char*& p, TextureData& out);
 	bool parseTextureConnection(const unsigned char*& p, TextureConnection& out);
 
-	bool parseLight(const unsigned char*& p, Light& light, TransformComponent& transform);
+	bool parseLight(const unsigned char*& p, Light& light, TransformComponent& transform, ColourComponent& colour);
 
 	bool parseSquareGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);
 	bool parseCubeGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);

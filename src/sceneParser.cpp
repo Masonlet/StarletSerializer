@@ -66,7 +66,8 @@ bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
 		StarEntity entity = scene.createEntity();
 		Light* light = scene.addComponent<Light>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseLight(p, *light, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseLight(p, *light, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "camera") == 0) {
 		StarEntity entity = scene.createEntity();
