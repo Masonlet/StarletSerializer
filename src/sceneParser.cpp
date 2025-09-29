@@ -59,7 +59,8 @@ bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
 		StarEntity entity = scene.createEntity();
 		Model* model = scene.addComponent<Model>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseModel(p, *model, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseModel(p, *model, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "light") == 0) {
 		StarEntity entity = scene.createEntity();
@@ -92,31 +93,36 @@ bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
 		StarEntity entity = scene.createEntity();
 		Primitive* primitive = scene.addComponent<Primitive>(entity);
 		TransformComponent* transform = scene.addComponent <TransformComponent>(entity);
-		return parseTriangle(p, *primitive, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseTriangle(p, *primitive, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "square") == 0) {
 		StarEntity entity = scene.createEntity();
 		Primitive* primitive = scene.addComponent<Primitive>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseSquare(p, *primitive, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseSquare(p, *primitive, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "cube") == 0) {
 		StarEntity entity = scene.createEntity();
 		Primitive* primitive = scene.addComponent<Primitive>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseSquare(p, *primitive, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseSquare(p, *primitive, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "squareGrid") == 0) {
 		StarEntity entity = scene.createEntity();
 		Grid* grid = scene.addComponent<Grid>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseSquareGrid(p, *grid, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseSquareGrid(p, *grid, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "cubeGrid") == 0) {
 		StarEntity entity = scene.createEntity();
 		Grid* grid = scene.addComponent<Grid>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
-		return parseCubeGrid(p, *grid, *transform);
+		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
+		return parseCubeGrid(p, *grid, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "velocity") == 0) {
 		unsigned char nameToken[256]{};

@@ -5,13 +5,14 @@ template <typename T> struct Vec3;
 template <typename T> struct Vec4;
 
 enum class ColourMode;
-struct Camera;
 enum class PrimitiveType;
+enum class GridType;
+
+struct Camera;
 struct Primitive;
 struct Model;
 struct Light;
 struct Grid;
-enum class GridType;
 
 struct TextureCPU;
 struct MeshCPU;
@@ -21,6 +22,7 @@ struct TextureConnection;
 
 struct TransformComponent;
 struct VelocityComponent;
+struct ColourComponent;
 
 class Scene;
 
@@ -58,13 +60,14 @@ public:
 
 	bool parseColour(const unsigned char*& p, Vec4<float>& colourOut, ColourMode& modeOut);
 
+	bool parseTriangle(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
+	bool parseSquare(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
+	bool parseCube(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
+
 	bool parseCamera(const unsigned char*& p, Camera& out, TransformComponent& transform);
 
-	template<PrimitiveType T>
-  bool parsePrimitive(const unsigned char*& p, Primitive& out, TransformComponent& transform);
-
   bool parsePlyMesh(const std::string& path, MeshCPU& drawInfo);
-	bool parseModel(const unsigned char*& p, Model& out, TransformComponent& transform);
+	bool parseModel(const unsigned char*& p, Model& out, TransformComponent& transform, ColourComponent& colour);
 
 	bool parseBMP(const char* path, TextureCPU& out);
 	bool parseTexture(const unsigned char*& p, TextureData& out);
@@ -73,8 +76,8 @@ public:
 
 	bool parseLight(const unsigned char*& p, Light& light, TransformComponent& transform);
 
-	template <GridType T>
-	bool parseGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform);
+	bool parseSquareGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);
+	bool parseCubeGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);
 
 	bool parseVelocity(const unsigned char*& p, VelocityComponent& velocity);
 
@@ -100,9 +103,8 @@ private:
 	bool parseNamedColour(const unsigned char*& p, Vec4<float>& colour, ColourMode& mode);
 	bool parseNumericColour(const unsigned char*& p, Vec4<float>& out);
 
-	bool parseTriangle(const unsigned char*& p, Primitive& out, TransformComponent& transform);
-	bool parseSquare(const unsigned char*& p, Primitive& out, TransformComponent& transform);
-	bool parseCube(const unsigned char*& p, Primitive& out, TransformComponent& transform);
+	template <PrimitiveType T>
+	bool parsePrimitive(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
 
 	bool parsePlyElementLine(const unsigned char*& p, unsigned int& verticesOut, unsigned int& trianglesOut);
 	bool parsePlyPropertyLine(const unsigned char*& p, bool& hasNx, bool& hasNy, bool& hasNz, bool& hasR, bool& hasG, bool& hasB, bool& hasU, bool& hasV);
@@ -113,8 +115,8 @@ private:
 
 	bool parseLightType(const unsigned char*& p, unsigned int& typeOut);
 
-	bool parseSquareGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform);
-	bool parseCubeGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform);
+	template <GridType T>
+	bool parseGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);
 
 	bool parseBmpHeader(const unsigned char* p, size_t fileSize, int32_t& height, int32_t& width, uint32_t& dataOffset);
 

@@ -3,7 +3,7 @@
 #include "StarletScene/components/model.hpp"
 #include "StarletScene/components/transform.hpp"
 
-bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponent& transform) {
+bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponent& transform, ColourComponent& colour) {
   PARSE_OR(return false, parseBool, model.isVisible, "model enabled");
   PARSE_OR(return false, parseBool, model.isLighted, "model lighting");
   PARSE_STRING_OR(return false, p, model.name, 64, "model name");
@@ -11,7 +11,7 @@ bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponen
   PARSE_OR(return false, parseVec3, transform.pos, "model position");
   PARSE_OR(return false, parseVec3, transform.rot, "model rotation");
   PARSE_OR(return false, parseVec3, transform.size, "model scale");
-  if (!parseColour(p, model.colour, model.colourMode)) return false;
-  PARSE_OR(return false, parseVec4, model.specular, "model specular");
+  if (!parseColour(p, colour.colour, colour.mode)) return false;
+  PARSE_OR(return false, parseVec4, colour.specular, "model specular");
   return true;
 }
