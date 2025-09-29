@@ -1,36 +1,35 @@
-#include "StarletParsers/parserUtils.hpp"
+#include "StarletParsers/parser.hpp"
+#include "StarletParsers/utils/log.hpp"
 
 #include "StarletMath/vec2.hpp"
 #include "StarletMath/vec3.hpp"
 #include "StarletMath/vec4.hpp"
 
-#include "StarletParsers/utils/log.hpp"
-
 #include <cstdlib>  
 #include <cstring>
 #include <cstdio>
 
-static inline bool isDelim(unsigned char c, bool comma = true) {
+bool Parser::isDelim(unsigned char c, bool comma) {
 	return c == 0 || c == ' ' || c == '\t' || c == '\n' || c == '\r' || (comma && c == ',');
 }
 
-const unsigned char* skipToNextLine(const unsigned char* p) {
+const unsigned char* Parser::skipToNextLine(const unsigned char* p) {
 	if (!p) return nullptr;
 	while (*p && *p != '\n' && *p != '\r') ++p;
 	if (*p == '\r') ++p;
 	if (*p == '\n') ++p;
 	return p;
 }
-const unsigned char* skipWhitespace(const unsigned char* p, bool skipComma) {
+const unsigned char* Parser::skipWhitespace(const unsigned char* p, bool skipComma) {
 	while (p && *p && isDelim(*p, skipComma)) ++p;
 	return p ? p : nullptr;
 }
-const unsigned char* trimEOL(const unsigned char* p, const unsigned char* end) {
+const unsigned char* Parser::trimEOL(const unsigned char* p, const unsigned char* end) {
 	while (end && *end && end > p && (end[-1] == '\n' || end[-1] == '\r' || end[-1] == ',')) --end;
 	return end ? end : nullptr;
 }
 
-bool parseUInt(const unsigned char*& p, unsigned int& out) {
+bool Parser::parseUInt(const unsigned char*& p, unsigned int& out) {
 	p = skipWhitespace(p);
 	if (!p || *p == '\0' || *p < '0' || *p > '9') return false;
 
@@ -38,7 +37,7 @@ bool parseUInt(const unsigned char*& p, unsigned int& out) {
 	while (*p >= '0' && *p <= '9') out = out * 10 + (*p++ - '0');
 	return true;
 }
-bool parseBool(const unsigned char*& p, bool& out) {
+bool Parser::parseBool(const unsigned char*& p, bool& out) {
 	p = skipWhitespace(p);
 	if (!p || *p == '\0') return false;
 
@@ -73,7 +72,7 @@ static inline int parseFloatDigit(const unsigned char*& p, unsigned long long& u
 static const double POW10_NEG9[10] = {
 	1.0, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9
 };
-bool parseFloat(const unsigned char*& p, float& out) {
+bool Parser::parseFloat(const unsigned char*& p, float& out) {
 	p = skipWhitespace(p);
 	if (!p || *p == '\0') return false;
 
@@ -144,17 +143,17 @@ bool parseFloat(const unsigned char*& p, float& out) {
 	return true;
 }
 
-bool parseVec2f(const unsigned char*& p, Vec2<float>& out) {
+bool Parser::parseVec2f(const unsigned char*& p, Vec2<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y);
 }
-bool parseVec3(const unsigned char*& p, Vec3<float>& out) {
+bool Parser::parseVec3(const unsigned char*& p, Vec3<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y) && parseFloat(p, out.z);
 }
-bool parseVec4(const unsigned char*& p, Vec4<float>& out) {
+bool Parser::parseVec4(const unsigned char*& p, Vec4<float>& out) {
 	return parseFloat(p, out.x) && parseFloat(p, out.y) && parseFloat(p, out.z) && parseFloat(p, out.w);
 }
 
-bool parseToken(const unsigned char*& p, unsigned char* out, const size_t maxLength) {
+bool Parser::parseToken(const unsigned char*& p, unsigned char* out, const size_t maxLength) {
 	if (!p || !out || maxLength == 0) return false;
 	p = skipWhitespace(p);
 	if (!p || *p == '\0') return false;

@@ -1,0 +1,146 @@
+#include "StarletParsers/parser.hpp"
+#include "StarletParsers/utils/log.hpp"
+
+#include "StarletScene/components/model.hpp"
+#include "StarletScene/components/light.hpp"
+#include "StarletScene/components/camera.hpp"
+#include "StarletScene/components/grid.hpp"
+#include "StarletScene/components/textureData.hpp"
+#include "StarletScene/components/textureConnection.hpp"
+#include "StarletScene/components/primitive.hpp"
+#include "StarletScene/components/transform.hpp"
+#include "StarletScene/components/velocity.hpp"
+
+#include "StarletScene/scene.hpp"
+
+bool Parser::parseScene(Scene& scene, const std::string& path) {
+	std::string src{};
+	if (!loadFile(src, path)) return error("SceneLoader", "loadScene", "Failed to load path: " + path);
+
+	const unsigned char* p = reinterpret_cast<const unsigned char*>(src.c_str());
+	while (*p) {
+		const unsigned char* nextLine = skipToNextLine(p);
+		const unsigned char* endLine = trimEOL(p, nextLine);
+
+		if (endLine <= p) {
+			p = nextLine;
+			continue;
+		}
+
+		if (!parseSceneLine(p, scene)) {
+			const std::size_t maxLen = 256;
+			std::size_t len = static_cast<std::size_t>(endLine - p);
+			if (len > maxLen) len = maxLen;
+			std::string errorMsg;
+			errorMsg.reserve(len);
+			errorMsg.append(reinterpret_cast<const char*>(p), len);
+			return error("SceneManager", "loadTxtScene", std::string("Failed to process scene line: \"") + errorMsg + "\"");
+		}
+
+		if (p < nextLine) p = nextLine;
+	}
+	return true;
+}
+
+bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
+	if (!p || *p == '\0') return true;
+
+	unsigned char token[64]{};
+	parseToken(p, token, sizeof(token));
+
+	const char* nameStr = reinterpret_cast<const char*>(token);
+	if (!p || strlen(nameStr) == 0) return true;
+
+	if (strcmp(nameStr, "comment") == 0 || nameStr[0] == '#') {
+		p = skipToNextLine(p);
+		return true;
+	}
+	else if (strcmp(nameStr, "model") == 0) {
+		StarEntity entity = scene.createEntity();
+		Model* model = scene.addComponent<Model>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseModel(p, *model, *transform);
+	}
+	else if (strcmp(nameStr, "light") == 0) {
+		StarEntity entity = scene.createEntity();
+		Light* light = scene.addComponent<Light>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseLight(p, *light, *transform);
+	}
+	else if (strcmp(nameStr, "camera") == 0) {
+		StarEntity entity = scene.createEntity();
+		Camera* camera = scene.addComponent<Camera>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseCamera(p, *camera, *transform);
+	}
+	else if (strcmp(nameStr, "texture") == 0) {
+		StarEntity entity = scene.createEntity();
+		TextureData* texture = scene.addComponent<TextureData>(entity);
+		return parseTexture(p, *texture);
+	}
+	else if (strcmp(nameStr, "textureCube") == 0) {
+		StarEntity entity = scene.createEntity();
+		TextureData* texture = scene.addComponent<TextureData>(entity);
+		return parseCubeTexture(p, *texture);
+	}
+	else if (strcmp(nameStr, "textureAdd") == 0) {
+		StarEntity entity = scene.createEntity();
+		TextureConnection* connection = scene.addComponent<TextureConnection>(entity);
+		return parseTextureConnection(p, *connection);
+	}
+	else if (strcmp(nameStr, "triangle") == 0) {
+		StarEntity entity = scene.createEntity();
+		Primitive* primitive = scene.addComponent<Primitive>(entity);
+		TransformComponent* transform = scene.addComponent <TransformComponent>(entity);
+		return parseTriangle(p, *primitive, *transform);
+	}
+	else if (strcmp(nameStr, "square") == 0) {
+		StarEntity entity = scene.createEntity();
+		Primitive* primitive = scene.addComponent<Primitive>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseSquare(p, *primitive, *transform);
+	}
+	else if (strcmp(nameStr, "cube") == 0) {
+		StarEntity entity = scene.createEntity();
+		Primitive* primitive = scene.addComponent<Primitive>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseSquare(p, *primitive, *transform);
+	}
+	else if (strcmp(nameStr, "squareGrid") == 0) {
+		StarEntity entity = scene.createEntity();
+		Grid* grid = scene.addComponent<Grid>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseSquareGrid(p, *grid, *transform);
+	}
+	else if (strcmp(nameStr, "cubeGrid") == 0) {
+		StarEntity entity = scene.createEntity();
+		Grid* grid = scene.addComponent<Grid>(entity);
+		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
+		return parseCubeGrid(p, *grid, *transform);
+	}
+	else if (strcmp(nameStr, "velocity") == 0) {
+		unsigned char nameToken[256]{};
+		parseToken(p, nameToken, sizeof(nameToken));
+		const std::string entityName = reinterpret_cast<const char*>(nameToken);
+
+		StarEntity entity = scene.getEntityByName<Model>(entityName);
+		if (entity != -1) {
+			VelocityComponent* velocity = scene.addComponent<VelocityComponent>(entity);
+			if (velocity) return parseVelocity(p, *velocity);
+			else return error("SceneLoader", "processSceneLine", "Failed to add VelocityComponent to entity " + entityName);
+		}
+	}
+	else if (strcmp(nameStr, "ambient") == 0) {
+		bool enabled{ false };
+		if (!parseBool(p, enabled)) return error("SceneLoader", "processSceneLine", "Failed to parse ambient enabled");
+
+		Vec3 colour{ 0.0f, 0.0f, 0.0f };
+		if (!parseVec3(p, colour)) return error("SceneLoader", "processSceneLine", "Failed to parse ambient colour");
+
+		if (enabled) scene.setAmbientLight({ colour, 1.0f });
+		else scene.setAmbientLight(Vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
+		return true;
+	}
+
+	return error("SceneManager", "processSceneLine", "Failed to handle: " + std::string(nameStr));
+}

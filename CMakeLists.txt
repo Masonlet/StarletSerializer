@@ -15,5 +15,5 @@ if(NOT TARGET ${PARSER_NAME})
 
   target_sources(${PARSER_NAME} PRIVATE ${PARSER_SRC} ${PARSER_HEADERS})
   target_include_directories(${PARSER_NAME} PUBLIC $<BUILD_INTERFACE:${PARSER_INC_DIR}> $<INSTALL_INTERFACE:include>)
-  target_link_libraries(${PARSER_NAME} PUBLIC StarletMath)
+  target_link_libraries(${PARSER_NAME} PUBLIC StarletMath StarletScene StarletGraphics)
 endif()
