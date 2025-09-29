@@ -1,4 +1,4 @@
-#include "StarletParsers/parser.hpp"
+#include "StarletParser/parser.hpp"
 
 #include "StarletScene/components/grid.hpp"
 #include "StarletScene/components/transform.hpp"

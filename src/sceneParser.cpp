@@ -1,5 +1,5 @@
-#include "StarletParsers/parser.hpp"
-#include "StarletParsers/utils/log.hpp"
+#include "StarletParser/parser.hpp"
+#include "StarletParser/utils/log.hpp"
 
 #include "StarletScene/components/model.hpp"
 #include "StarletScene/components/light.hpp"

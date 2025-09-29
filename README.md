@@ -1,4 +1,4 @@
-# StarletParsers
+# StarletParser
 A lightweight parsing library for **Starlet** projects designed with OpenGL engines in mind.
 
 ## Features
@@ -18,8 +18,8 @@ A lightweight parsing library for **Starlet** projects designed with OpenGL engi
 ```cmake
 include(FetchContent)
 
-FetchContent_Declare(StarletParsers GIT_REPOSITORY https://github.com/Masonlet/StarletParsers.git GIT_TAG main)
-FetchContent_MakeAvailable(StarletParsers)
+FetchContent_Declare(StarletParsers GIT_REPOSITORY https://github.com/Masonlet/StarletParser.git GIT_TAG main)
+FetchContent_MakeAvailable(StarletParser)
 
-target_link_libraries(YourAppName PRIVATE StarletParsers)
+target_link_libraries(YourAppName PRIVATE StarletParser)
 ```
