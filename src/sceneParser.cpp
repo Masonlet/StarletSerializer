@@ -86,9 +86,28 @@ bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
 		return parseCubeTexture(p, *texture);
 	}
 	else if (strcmp(nameStr, "textureAdd") == 0) {
-		StarEntity entity = scene.createEntity();
-		TextureConnection* connection = scene.addComponent<TextureConnection>(entity);
-		return parseTextureConnection(p, *connection);
+		struct TextureConnection {
+			std::string modelName, textureName;
+			unsigned int slot{ 0 };
+			float mix{ 1.0f };
+		} data;
+		
+		PARSE_STRING_OR(return false, p, data.modelName, 64, "texture connection model name");
+		PARSE_OR(return false, parseUInt, data.slot, "texture connection slot");
+		if (data.slot >= Model::NUM_TEXTURES)
+			return error("Parser", "textureAdd", "Invalid texture slot index: " + std::to_string(data.slot) + " for model: " + data.modelName);
+
+		PARSE_STRING_OR(return false, p, data.textureName, 128, "texture connection name");
+		PARSE_OR(return false, parseFloat, data.mix, "texture connection mix");
+
+		StarEntity e = scene.getEntityByName<Model>(data.modelName);
+		if (e == -1) return error("Parser", "textureAdd", "Entity is not a model or not found: " + data.modelName);
+
+		Model& model = scene.getComponent<Model>(e);
+		model.textureNames[data.slot] = data.textureName;
+		model.textureMixRatio[data.slot] = data.mix;
+		model.useTextures = true;
+		return true;
 	}
 	else if (strcmp(nameStr, "triangle") == 0) {
 		StarEntity entity = scene.createEntity();

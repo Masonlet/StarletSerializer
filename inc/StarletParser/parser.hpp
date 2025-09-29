@@ -72,7 +72,6 @@ public:
 	bool parseBMP(const char* path, TextureCPU& out);
 	bool parseTexture(const unsigned char*& p, TextureData& out);
 	bool parseCubeTexture(const unsigned char*& p, TextureData& out);
-	bool parseTextureConnection(const unsigned char*& p, TextureConnection& out);
 
 	bool parseLight(const unsigned char*& p, Light& light, TransformComponent& transform, ColourComponent& colour);
 
