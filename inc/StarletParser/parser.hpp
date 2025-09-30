@@ -58,7 +58,8 @@ public:
 	bool loadFile(std::string& out, const std::string& path);
 	bool loadBinaryFile(std::vector<unsigned char>& dataOut, const std::string& path);
 
-	bool parseColour(const unsigned char*& p, Vec4<float>& colourOut, ColourMode& modeOut);
+	bool parseColour(const unsigned char*& p, Vec4<float>& colourOut);
+	bool parseSpecialColour(const unsigned char*& p, ColourMode& mode);
 
 	bool parseTriangle(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
 	bool parseSquare(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour);
@@ -99,7 +100,7 @@ private:
 	bool parseVec4(const unsigned char*& p, Vec4<float>& out);
 	bool parseToken(const unsigned char*& p, unsigned char* out, const size_t maxLength);
 
-	bool parseNamedColour(const unsigned char*& p, Vec4<float>& colour, ColourMode& mode);
+	bool parseNamedColour(const unsigned char*& p, Vec4<float>& colour);
 	bool parseNumericColour(const unsigned char*& p, Vec4<float>& out);
 
 	template <PrimitiveType T>

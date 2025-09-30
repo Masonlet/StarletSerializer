@@ -11,7 +11,8 @@ bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponen
   PARSE_OR(return false, parseVec3, transform.pos, "model position");
   PARSE_OR(return false, parseVec3, transform.rot, "model rotation");
   PARSE_OR(return false, parseVec3, transform.size, "model scale");
-  if (!parseColour(p, colour.colour, colour.mode)) return false;
+  if (!parseColour(p, colour.colour) && !parseSpecialColour(p, model.mode))
+			return false;
   PARSE_OR(return false, parseVec4, colour.specular, "model specular");
   return true;
 }

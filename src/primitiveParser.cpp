@@ -10,7 +10,7 @@ bool Parser::parsePrimitive(const unsigned char*& p, Primitive& out, TransformCo
   PARSE_OR(return false, parseVec3, transform.pos, "primitive position");
   PARSE_OR(return false, parseVec3, transform.rot, "primitive rotation");
   PARSE_OR(return false, parseVec3, transform.size, "triangle size");
-  return parseColour(p, colour.colour, colour.mode);
+  return parseColour(p, colour.colour);
 }
 
 bool Parser::parseTriangle(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour) {

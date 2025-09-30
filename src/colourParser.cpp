@@ -5,11 +5,11 @@
 #include "StarletMath/vec4.hpp"
 
 
-bool Parser::parseColour(const unsigned char*& p, Vec4<float>& colourOut, ColourMode& modeOut) {
+bool Parser::parseColour(const unsigned char*& p, Vec4<float>& colourOut) {
 	const unsigned char* original = p;
 	if (parseNumericColour(p, colourOut)) return true;
 	p = original;
-	if (parseNamedColour(p, colourOut, modeOut)) return true;
+	if (parseNamedColour(p, colourOut)) return true;
 	p = original;
 	return error("Parser", "parseColour", "Unknown colour format");
 }
@@ -37,7 +37,7 @@ bool Parser::parseNumericColour(const unsigned char*& p, Vec4<float>& out) {
 	return false;
 }
 
-bool Parser::parseNamedColour(const unsigned char*& p, Vec4<float>& colour, ColourMode& mode) {
+bool Parser::parseNamedColour(const unsigned char*& p, Vec4<float>& colour) {
 	unsigned char input[64]{};
 	if (!parseToken(p, input, sizeof(input)) || !p) return false;
 
@@ -49,9 +49,17 @@ bool Parser::parseNamedColour(const unsigned char*& p, Vec4<float>& colour, Colo
 	else if (strcmp(name, "White") == 0)   colour = { 1.0f, 1.0f, 1.0f, 1.0f };
 	else if (strcmp(name, "Gray") == 0
 		|| strcmp(name, "Grey") == 0)    colour = { 0.5f, 0.5f, 0.5f, 1.0f };
-	else if (strcmp(name, "Random") == 0)  mode = ColourMode::Random;
-	else if (strcmp(name, "Rainbow") == 0) mode = ColourMode::VerticalGradient;
-	else if (strcmp(name, "PLY") == 0)     mode = ColourMode::PLYColour;
+
 	else return false;
 	return true;
+}
+
+bool Parser::parseSpecialColour(const unsigned char*& p, ColourMode& mode) {
+	unsigned char input[64]{};
+	if (!parseToken(p, input, sizeof(input)) || !p) return false;
+
+	const char* name = reinterpret_cast<const char*>(input);
+		if (strcmp(name, "Random") == 0)  mode = ColourMode::Random;
+		else if (strcmp(name, "Rainbow") == 0) mode = ColourMode::VerticalGradient;
+		else if (strcmp(name, "PLY") == 0)     mode = ColourMode::PLYColour;
 }

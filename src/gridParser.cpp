@@ -14,7 +14,7 @@ bool Parser::parseGrid(const unsigned char*& p, Grid& grid, TransformComponent& 
   PARSE_OR(return false, parseVec3, transform.pos, "grid start position");
   PARSE_OR(return false, parseVec3, transform.rot, "grid rotation");
   PARSE_OR(return false, parseVec3, transform.size, "grid scale");
-  return parseColour(p, colour.colour, colour.mode);
+  return parseColour(p, colour.colour);
 }
 
 bool Parser::parseSquareGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour) {
