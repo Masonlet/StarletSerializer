@@ -4,7 +4,6 @@
 #include "StarletScene/components/colour.hpp"
 #include "StarletMath/vec4.hpp"
 
-
 bool Parser::parseColour(const unsigned char*& p, Vec4<float>& colourOut) {
 	const unsigned char* original = p;
 	if (parseNumericColour(p, colourOut)) return true;
@@ -42,24 +41,14 @@ bool Parser::parseNamedColour(const unsigned char*& p, Vec4<float>& colour) {
 	if (!parseToken(p, input, sizeof(input)) || !p) return false;
 
 	const char* name = reinterpret_cast<const char*>(input);
-	if (strcmp(name, "Red") == 0)     colour = { 1.0f, 0.0f, 0.0f, 1.0f };
+	if      (strcmp(name, "Red") == 0)     colour = { 1.0f, 0.0f, 0.0f, 1.0f };
 	else if (strcmp(name, "Green") == 0)   colour = { 0.0f, 1.0f, 0.0f, 1.0f };
 	else if (strcmp(name, "Blue") == 0)    colour = { 0.0f, 0.0f, 1.0f, 1.0f };
 	else if (strcmp(name, "Yellow") == 0)  colour = { 1.0f, 1.0f, 0.0f, 1.0f };
 	else if (strcmp(name, "White") == 0)   colour = { 1.0f, 1.0f, 1.0f, 1.0f };
 	else if (strcmp(name, "Gray") == 0
-		|| strcmp(name, "Grey") == 0)    colour = { 0.5f, 0.5f, 0.5f, 1.0f };
+		    || strcmp(name, "Grey") == 0)    colour = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	else return false;
 	return true;
-}
-
-bool Parser::parseSpecialColour(const unsigned char*& p, ColourMode& mode) {
-	unsigned char input[64]{};
-	if (!parseToken(p, input, sizeof(input)) || !p) return false;
-
-	const char* name = reinterpret_cast<const char*>(input);
-		if (strcmp(name, "Random") == 0)  mode = ColourMode::Random;
-		else if (strcmp(name, "Rainbow") == 0) mode = ColourMode::VerticalGradient;
-		else if (strcmp(name, "PLY") == 0)     mode = ColourMode::PLYColour;
 }

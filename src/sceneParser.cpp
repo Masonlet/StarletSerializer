@@ -9,6 +9,7 @@
 #include "StarletScene/components/primitive.hpp"
 #include "StarletScene/components/transform.hpp"
 #include "StarletScene/components/velocity.hpp"
+#include "StarletScene/components/colour.hpp"
 
 #include "StarletScene/scene.hpp"
 

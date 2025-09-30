@@ -2,6 +2,7 @@
 
 #include "StarletScene/components/primitive.hpp"
 #include "StarletScene/components/transform.hpp"
+#include "StarletScene/components/colour.hpp"
 
 template<PrimitiveType T>
 bool Parser::parsePrimitive(const unsigned char*& p, Primitive& out, TransformComponent& transform, ColourComponent& colour) {

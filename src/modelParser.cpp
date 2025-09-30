@@ -2,6 +2,7 @@
 
 #include "StarletScene/components/model.hpp"
 #include "StarletScene/components/transform.hpp"
+#include "StarletScene/components/colour.hpp"
 
 bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponent& transform, ColourComponent& colour) {
   PARSE_OR(return false, parseBool, model.isVisible, "model enabled");
@@ -14,5 +15,18 @@ bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponen
   if (!parseColour(p, colour.colour) && !parseSpecialColour(p, model.mode))
 			return false;
   PARSE_OR(return false, parseVec4, colour.specular, "model specular");
+  return true;
+}
+
+bool Parser::parseSpecialColour(const unsigned char*& p, ColourMode& mode) {
+  unsigned char input[64]{};
+  if (!parseToken(p, input, sizeof(input)) || !p) return false;
+
+  const char* name = reinterpret_cast<const char*>(input);
+  if (strcmp(name, "Random") == 0)  mode = ColourMode::Random;
+  else if (strcmp(name, "Rainbow") == 0) mode = ColourMode::VerticalGradient;
+  else if (strcmp(name, "PLY") == 0)     mode = ColourMode::PLYColour;
+  else return false;
+
   return true;
 }

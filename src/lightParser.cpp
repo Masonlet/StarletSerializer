@@ -2,18 +2,27 @@
 #include "StarletParser/utils/log.hpp"
 
 #include "StarletScene/components/light.hpp"
+
 #include "StarletScene/components/transform.hpp"
 #include "StarletScene/components/colour.hpp"
 
-bool Parser::parseLightType(const unsigned char*& p, unsigned int& typeOut) {
+bool Parser::parseLightType(const unsigned char*& p, LightType& type) {
 	p = skipWhitespace(p);
 	if (!p || *p == '\0') return false;
-	if (*p == '0') { ++p; typeOut = 0; return true; }
-	if (*p == '1') { ++p; typeOut = 1; return true; }
-	if (*p == '2') { ++p; typeOut = 2; return true; }
 
 	const unsigned char* original = p;
-	if (parseUInt(p, typeOut)) return true;
+
+	unsigned int lightType;
+	if (parseUInt(p, lightType)) {
+		switch (lightType) {
+		case 0: type = LightType::Point; break;
+		case 1: type = LightType::Spot; break;
+		case 2: type = LightType::Directional; break;
+		default: return error("Parser", "parseLightType", "Unknown light type");
+		}
+
+		return true;
+	}
 
 	p = original;
 	unsigned char typeName[64]{};
@@ -22,9 +31,9 @@ bool Parser::parseLightType(const unsigned char*& p, unsigned int& typeOut) {
 		return false;
 	}
 
-	if (strcmp((char*)typeName, "Point") == 0)       typeOut = 0;
-	else if (strcmp((char*)typeName, "Spot") == 0)        typeOut = 1;
-	else if (strcmp((char*)typeName, "Directional") == 0) typeOut = 2;
+	if (strcmp((char*)typeName, "Point") == 0) type = LightType::Point;
+	else if (strcmp((char*)typeName, "Spot") == 0) type = LightType::Spot;
+	else if (strcmp((char*)typeName, "Directional") == 0) type = LightType::Directional;
 	else return error("Parser", "parseLightType", "Unknown light type");
 	return true;
 }

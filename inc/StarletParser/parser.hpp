@@ -7,18 +7,18 @@ template <typename T> struct Vec4;
 enum class ColourMode;
 enum class PrimitiveType;
 enum class GridType;
+enum class LightType;
 
 struct Camera;
 struct Primitive;
 struct Model;
 struct Light;
 struct Grid;
+struct TextureData;
+struct TextureConnection;
 
 struct TextureCPU;
 struct MeshCPU;
-
-struct TextureData;
-struct TextureConnection;
 
 struct TransformComponent;
 struct VelocityComponent;
@@ -113,7 +113,7 @@ private:
 	bool parseVertices(const unsigned char*& p, MeshCPU& drawInfo);
 	bool parseIndices(const unsigned char*& p, MeshCPU& drawInfo);
 
-	bool parseLightType(const unsigned char*& p, unsigned int& typeOut);
+	bool parseLightType(const unsigned char*& p, LightType& type);
 
 	template <GridType T>
 	bool parseGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour);
