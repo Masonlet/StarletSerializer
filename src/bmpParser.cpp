@@ -5,7 +5,7 @@
 
 #include <cstdio>
 
-bool Parser::parseBMP(const char* path, TextureCPU& out) {
+bool Parser::parseBMP(const std::string& path, TextureCPU& out) {
 	out.freePixels();
 	out.width = out.height = 0;
 

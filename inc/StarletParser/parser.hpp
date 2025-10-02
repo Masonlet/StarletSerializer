@@ -70,7 +70,7 @@ public:
   bool parsePlyMesh(const std::string& path, MeshCPU& drawInfo);
 	bool parseModel(const unsigned char*& p, Model& out, TransformComponent& transform, ColourComponent& colour);
 
-	bool parseBMP(const char* path, TextureCPU& out);
+	bool parseBMP(const std::string& path, TextureCPU& out);
 	bool parseTexture(const unsigned char*& p, TextureData& out);
 	bool parseCubeTexture(const unsigned char*& p, TextureData& out);
 
