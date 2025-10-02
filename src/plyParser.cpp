@@ -1,7 +1,7 @@
 #include "StarletParser/parser.hpp"
 #include "StarletParser/utils/log.hpp"
 
-#include "StarletGraphics/mesh/mesh.hpp"
+#include "StarletGraphics/resource/mesh.hpp"
 #include "StarletMath/constants.hpp"
 
 #include <string>
