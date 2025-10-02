@@ -10,7 +10,7 @@ bool Parser::parseColour(const unsigned char*& p, Vec4<float>& colourOut) {
 	p = original;
 	if (parseNamedColour(p, colourOut)) return true;
 	p = original;
-	return error("Parser", "parseColour", "Unknown colour format");
+	return false;
 }
 bool Parser::parseNumericColour(const unsigned char*& p, Vec4<float>& out) {
 	const unsigned char* original = p;
