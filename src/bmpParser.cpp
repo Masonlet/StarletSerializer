@@ -1,7 +1,7 @@
 #include "StarletParser/parser.hpp"
 #include "StarletParser/utils/log.hpp"
 
-#include "StarletGraphics/resource/texture.hpp"
+#include "StarletGraphics/resource/textureCPU.hpp"
 
 #include <cstdio>
 
