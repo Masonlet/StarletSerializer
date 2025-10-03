@@ -128,7 +128,7 @@ bool Parser::parseSceneLine(const unsigned char* p, Scene& scene) {
 		Primitive* primitive = scene.addComponent<Primitive>(entity);
 		TransformComponent* transform = scene.addComponent<TransformComponent>(entity);
 		ColourComponent* colour = scene.addComponent<ColourComponent>(entity);
-		return parseSquare(p, *primitive, *transform, *colour);
+		return parseCube(p, *primitive, *transform, *colour);
 	}
 	else if (strcmp(nameStr, "squareGrid") == 0) {
 		StarEntity entity = scene.createEntity();
