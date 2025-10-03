@@ -43,9 +43,9 @@ bool Parser::parseLight(const unsigned char*& p, Light& light, TransformComponen
 	PARSE_STRING_OR(return false, p, light.name, 64, "light name");
 	PARSE_OR(return false, parseLightType, light.type, "light type");
 	PARSE_OR(return false, parseVec3, transform.pos, "light position");
+	PARSE_OR(return false, parseVec3, transform.rot, "light direction");
 	PARSE_OR(return false, parseVec4, colour.colour, "light diffuse");
 	PARSE_OR(return false, parseVec4, light.attenuation, "light attenuation");
-	PARSE_OR(return false, parseVec3, transform.rot, "light direction");
 	PARSE_OR(return false, parseVec2f, light.param1, "light param1");
 	return true;
 }
