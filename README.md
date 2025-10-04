@@ -1,12 +1,13 @@
-# StarletParser
-A lightweight parsing library for **Starlet** projects designed with OpenGL engines in mind.
+# StarletSerializer
+A lightweight serialization library for **Starlet** projects to handle both data reading and writing, designed with OpenGL engines in mind.
 
 ## Features
 - **Logging Utils**
     - `error` and `debug` for console logging
 
-- **File Parsers**
-    -`loadFile`, `loadBinaryFile`, both with basic safety checks
+- **File I/O**
+    - **Parser** - `loadFile`, `loadBinaryFile`, both with basic safety checks
+    - **Writer** - `saveScene`, for serializing scenes and components
 
 - **Parser Utils**
     - Whitespace & line skipping helpers: `skipWhitespace`, `skipToNextLine`, `trimEOL`
@@ -18,8 +19,8 @@ A lightweight parsing library for **Starlet** projects designed with OpenGL engi
 ```cmake
 include(FetchContent)
 
-FetchContent_Declare(StarletParsers GIT_REPOSITORY https://github.com/Masonlet/StarletParser.git GIT_TAG main)
-FetchContent_MakeAvailable(StarletParser)
+FetchContent_Declare(StarletSerializer GIT_REPOSITORY https://github.com/Masonlet/StarletSerializer.git GIT_TAG main)
+FetchContent_MakeAvailable(StarletSerializer)
 
-target_link_libraries(YourAppName PRIVATE StarletParser)
+target_link_libraries(YourAppName PRIVATE StarletSerializer)
 ```
