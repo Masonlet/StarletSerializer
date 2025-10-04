@@ -1,5 +1,5 @@
-#include "StarletParser/parser.hpp"
-#include "StarletParser/utils/log.hpp"
+#include "StarletSerializer/parser.hpp"
+#include "StarletSerializer/utils/log.hpp"
 
 bool Parser::getFileSize(FILE* file, size_t& sizeOut) {
 	if (fseek(file, 0, SEEK_END) != 0) return error("FileParser", "getFileSize", "Failed to seek end of file");

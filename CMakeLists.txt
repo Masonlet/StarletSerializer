@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(PARSER_NAME StarletParser)
-set(PARSER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(PARSER_INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+set(SER_NAME StarletSerializer)
+set(SER_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(SER_INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/inc")
 
-if(NOT TARGET ${PARSER_NAME})
-  add_library(${PARSER_NAME} STATIC)
+if(NOT TARGET ${SER_NAME})
+  add_library(${SER_NAME} STATIC)
 
-  file(GLOB_RECURSE PARSER_SRC CONFIGURE_DEPENDS ${PARSER_SRC_DIR}/*.cpp)
-  file(GLOB_RECURSE PARSER_HEADERS CONFIGURE_DEPENDS ${PARSER_INC_DIR}/${PARSER_NAME}/*.hpp)
+  file(GLOB_RECURSE SER_SRC CONFIGURE_DEPENDS ${SER_SRC_DIR}/*.cpp)
+  file(GLOB_RECURSE SER_HEADERS CONFIGURE_DEPENDS ${SER_INC_DIR}/${SER_NAME}/*.hpp)
 
-  source_group(TREE ${PARSER_SRC_DIR} PREFIX "Source Files" FILES ${PARSER_SRC})
-  source_group(TREE ${PARSER_INC_DIR} PREFIX "Header Files" FILES ${PARSER_HEADERS})
+  source_group(TREE ${SER_SRC_DIR} PREFIX "Source Files" FILES ${SER_SRC})
+  source_group(TREE ${SER_INC_DIR} PREFIX "Header Files" FILES ${SER_HEADERS})
 
-  target_sources(${PARSER_NAME} PRIVATE ${PARSER_SRC} ${PARSER_HEADERS})
-  target_include_directories(${PARSER_NAME} PUBLIC $<BUILD_INTERFACE:${PARSER_INC_DIR}> $<INSTALL_INTERFACE:include>)
-  target_link_libraries(${PARSER_NAME} PUBLIC StarletMath StarletScene StarletGraphics)
+  target_sources(${SER_NAME} PRIVATE ${SER_SRC} ${SER_HEADERS})
+  target_include_directories(${SER_NAME} PUBLIC $<BUILD_INTERFACE:${SER_INC_DIR}> $<INSTALL_INTERFACE:include>)
+  target_link_libraries(${SER_NAME} PUBLIC StarletMath StarletScene StarletGraphics)
 endif()

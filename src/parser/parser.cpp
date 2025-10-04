@@ -1,5 +1,5 @@
-#include "StarletParser/parser.hpp"
-#include "StarletParser/utils/log.hpp"
+#include "StarletSerializer/parser.hpp"
+#include "StarletSerializer/utils/log.hpp"
 
 #include "StarletMath/vec2.hpp"
 #include "StarletMath/vec3.hpp"
