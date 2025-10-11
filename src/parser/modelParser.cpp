@@ -1,8 +1,8 @@
 #include "StarletSerializer/parser.hpp"
 
-#include "StarletScene/components/model.hpp"
-#include "StarletScene/components/transform.hpp"
-#include "StarletScene/components/colour.hpp"
+#include "StarletScene/component/model.hpp"
+#include "StarletScene/component/transform.hpp"
+#include "StarletScene/component/colour.hpp"
 
 bool Parser::parseModel(const unsigned char*& p, Model& model, TransformComponent& transform, ColourComponent& colour) {
   PARSE_OR(return false, parseBool, model.isVisible, "model enabled");

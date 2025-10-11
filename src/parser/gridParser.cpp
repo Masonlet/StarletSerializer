@@ -1,9 +1,8 @@
 #include "StarletSerializer/parser.hpp"
 
-#include "StarletScene/components/grid.hpp"
-
-#include "StarletScene/components/transform.hpp"
-#include "StarletScene/components/colour.hpp"
+#include "StarletScene/component/grid.hpp"
+#include "StarletScene/component/transform.hpp"
+#include "StarletScene/component/colour.hpp"
 
 template <GridType T>
 bool Parser::parseGrid(const unsigned char*& p, Grid& grid, TransformComponent& transform, ColourComponent& colour) {

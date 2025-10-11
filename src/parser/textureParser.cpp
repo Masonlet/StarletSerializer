@@ -1,6 +1,6 @@
 #include "StarletSerializer/parser.hpp"
 
-#include "StarletScene/components/textureData.hpp"
+#include "StarletScene/component/textureData.hpp"
 
 bool Parser::parseTexture(const unsigned char*& p, TextureData& out) {
   PARSE_STRING_OR(return false, p, out.name, 128, "texture name");

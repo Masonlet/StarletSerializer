@@ -1,7 +1,7 @@
 #include "StarletSerializer/parser.hpp"
 
-#include "StarletScene/components/camera.hpp"
-#include "StarletScene/components/transform.hpp"
+#include "StarletScene/component/camera.hpp"
+#include "StarletScene/component/transform.hpp"
 
 bool Parser::parseCamera(const unsigned char*& p, Camera& camera, TransformComponent& transform) {
   PARSE_OR(return false, parseBool, camera.enabled, "camera enabled");

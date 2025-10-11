@@ -1,7 +1,7 @@
 #include "StarletSerializer/parser.hpp"
 #include "StarletSerializer/utils/log.hpp"
 
-#include "StarletScene/components/colour.hpp"
+#include "StarletScene/component/colour.hpp"
 #include "StarletMath/vec4.hpp"
 
 bool Parser::parseColour(const unsigned char*& p, Vec4<float>& colourOut) {
